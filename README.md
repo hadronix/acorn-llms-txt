@@ -43,6 +43,8 @@ A structured listing of your site content (like a table of contents):
 ```
 # Your Site Name
 
+> Your site tagline or description (if available)
+
 ## Additional Resources
 
 - [Full Content](https://yoursite.com/llms-full.txt) - Complete content of all posts and pages in Markdown format
