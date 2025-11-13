@@ -104,7 +104,6 @@ class LlmsTxtController
             return $this->formatIndividualPost($post);
         });
 
-
         if ($content === null) {
             abort(404);
         }
@@ -118,7 +117,8 @@ class LlmsTxtController
     {
         // Validate post types before querying
         if (! post_type_exists($postType)) {
-            error_log('No valid post types for individual post lookup: ' . $postType);
+            error_log('No valid post types for individual post lookup: '.$postType);
+
             return null;
         }
 
