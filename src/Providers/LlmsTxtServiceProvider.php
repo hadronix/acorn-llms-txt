@@ -80,7 +80,7 @@ class LlmsTxtServiceProvider extends ServiceProvider
     {
         if (config('llms-txt.individual_posts.enabled', false)) {
             $postTypesPattern = implode('|', config('llms-txt.individual_posts.post_types', ['post', 'page']));
-            Route::get("({$postTypesPattern})-{slug}.txt", [LlmsTxtController::class, 'individual'])
+            Route::get("{postType}-{slug}.txt", [LlmsTxtController::class, 'individual'])
                 ->where('postType', $postTypesPattern)
                 ->where('slug', '.+');
         }
