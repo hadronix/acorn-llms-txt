@@ -69,7 +69,15 @@ class LlmsTxtController
     {
         $cacheTtl = config('llms-txt.cache_ttl', 3600);
         $content = Cache::remember('llms_txt_sitemap', $cacheTtl, function () {
+            if (config('llms-txt.individual_posts.enabled') && !empty(config('llms-txt.individual_posts.post_types'))) {
+                add_filter('acorn/llms_txt/post_types', [$this, 'getIndividualPostTypes']);
+            }
+
             $posts = $this->fetcher->getPosts();
+
+            if (has_filter('acorn/llms_txt/post_types', [$this, 'getIndividualPostTypes'])) {
+                remove_filter('acorn/llms_txt/post_types', [$this, 'getIndividualPostTypes']);
+            }
 
             return $this->formatter->formatSitemap($posts);
         });
@@ -77,6 +85,11 @@ class LlmsTxtController
         return response($content, 200)
             ->header('Content-Type', 'application/xml; charset=utf-8')
             ->header('X-Robots-Tag', 'noindex');
+    }
+
+    public function getIndividualPostTypes(): array
+    {
+        return config('llms-txt.individual_posts.post_types');
     }
 
     public function individual(string $postType, string $slug): Response
